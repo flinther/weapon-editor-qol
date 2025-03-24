@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using Walgelijk;
 using Walgelijk.AssetManager;
 
@@ -14,6 +14,7 @@ public class AnimatedWeaponPart
     public float Duration = 0.15f;
     public Vector2 Scale = new(1, 1);
     public AssetRef<Texture> Texture;
+    public float TextureSize = 1;
     public Vec2Curve? TranslationCurve;
     public FloatCurve? AngleCurve;
     public FloatCurve? VisibilityCurve;

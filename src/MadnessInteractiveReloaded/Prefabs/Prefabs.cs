@@ -1,4 +1,4 @@
-﻿using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -529,8 +529,8 @@ public static class Prefabs
         });
         var baseTransformRef = new ComponentRef<TransformComponent>(@base);
 
-        var baseSpriteEntity = CreateSprite(scene, instructions.BaseTexture, default, parent: baseTransformRef,
-            renderOrder: RenderOrders.Default);
+        var baseSpriteEntity = CreateSprite(scene, instructions.BaseTexture, default, RenderOrders.Default,
+            baseTransformRef, instructions.TextureSize, instructions.TextureSize);
 
         Entity[]? animatedParts = null;
         if (instructions.AnimatedParts?.Count > 0)
@@ -541,7 +541,7 @@ public static class Prefabs
                 AnimatedWeaponPart animatedPart = instructions.AnimatedParts[i];
                 var startPos = animatedPart.TranslationCurve?.Evaluate(0) ?? default;
                 var ent = CreateSprite(scene, animatedPart.Texture, startPos, parent: baseTransformRef,
-                    xScaleMultiplier: animatedPart.Scale.X, yScaleMultiplier: animatedPart.Scale.Y);
+                    xScaleMultiplier: animatedPart.TextureSize, yScaleMultiplier: animatedPart.TextureSize);
                 scene.AttachComponent(ent, new WeaponPartAnimationComponent
                 {
                     IsPlaying = false,
@@ -571,7 +571,8 @@ public static class Prefabs
                 HoldForGrip = instructions.HoldForGrip,
                 HoldStockHandPose = instructions.HoldStockHandPose,
                 RemainingRounds = instructions.WeaponData.RoundsPerMagazine,
-                Texture = instructions.BaseTexture
+                Texture = instructions.BaseTexture,
+                TextureSize = instructions.TextureSize
             });
         scene.AttachComponent(@base, new PhysicsBodyComponent
         {

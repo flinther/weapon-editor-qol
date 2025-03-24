@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;  
@@ -283,6 +283,11 @@ public class WeaponEditorSystem : Walgelijk.System
 
         Ui.Spacer(s);
 
+        Ui.Label("Texture Size");
+        Ui.Layout.FitWidth().Height(h);
+        Ui.FloatInputBox(ref weapon.TextureSize, (0f, 360f));
+        Ui.Spacer(s);
+
         Ui.Label("Codename", HorizontalTextAlign.Left);
         Ui.Layout.FitWidth().Height(h);
         Ui.StringInputBox(ref weapon.Id, new TextBoxOptions(placeholder: "Codename", maxLength: 50));
@@ -549,7 +554,7 @@ public class WeaponEditorSystem : Walgelijk.System
             {
                 var item = weapon.AnimatedParts[i];
 
-                Ui.Layout.Height(210).FitWidth().VerticalLayout();
+                Ui.Layout.Height(280).FitWidth().VerticalLayout();
                 if (editor.CurrentSelectedAnimatedPart == item)
                     Ui.Theme.OutlineWidth(2).OutlineColour(Colors.White).Once();
                 Ui.StartGroup(true, i);
@@ -565,6 +570,10 @@ public class WeaponEditorSystem : Walgelijk.System
 
                     layout.Height(WeaponEditorComponent.ControlHeight).FitWidth().CenterHorizontal();
                     if (Ui.FloatInputBox(ref item.Duration, null, null))
+                        editor.CurrentSelectedAnimatedPart = item;
+
+                    layout.Height(WeaponEditorComponent.ControlHeight).FitWidth().CenterHorizontal();
+                    if (Ui.FloatInputBox(ref item.TextureSize, placeholder: "1"))
                         editor.CurrentSelectedAnimatedPart = item;
 
                     layout.Height(WeaponEditorComponent.ControlHeight).FitWidth().CenterHorizontal();
@@ -666,9 +675,9 @@ public class WeaponEditorSystem : Walgelijk.System
 
         //draw base texture
         Draw.Texture = weapon.BaseTexture.Value;
-        var hS = Draw.Texture.Size / 2;
+        var hS = (Draw.Texture.Size * weapon.TextureSize) / 2;
         var offset = new Vector2(-hS.X, hS.Y);
-        Draw.Quad(offset, Draw.Texture.Size);
+        Draw.Quad(offset, Draw.Texture.Size * weapon.TextureSize);
 
         //draw animated parts
         if (weapon.AnimatedParts != null)
@@ -684,7 +693,7 @@ public class WeaponEditorSystem : Walgelijk.System
 
                 Draw.Texture = item.Texture.Value;
 
-                var pos = new Vector2(-Draw.Texture.Size.X, Draw.Texture.Size.Y) * 0.5f;
+                var pos = new Vector2(-(Draw.Texture.Size.X * item.TextureSize), Draw.Texture.Size.Y * item.TextureSize) * 0.5f;
 
                 if (item.TranslationCurve != null)
                 {
@@ -692,7 +701,7 @@ public class WeaponEditorSystem : Walgelijk.System
                     pos += o;
                 }
 
-                Draw.Quad(pos, Draw.Texture.Size * item.Scale);
+                Draw.Quad(pos, Draw.Texture.Size * item.TextureSize);
             }
 
         //draw hold points

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Numerics;
 using Walgelijk;
 using Walgelijk.AssetManager;
@@ -25,6 +25,8 @@ public class WeaponInstructions
     /// The core texture of the weapon, minus moving parts.
     /// </summary>
     public AssetRef<Texture> BaseTexture;
+
+    public float TextureSize = 1;
 
     /// <summary>
     /// If the secondary hand holds the grip like a vertical foregrip or not.

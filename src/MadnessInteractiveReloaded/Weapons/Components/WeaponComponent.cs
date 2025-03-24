@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Walgelijk;
@@ -73,6 +73,8 @@ public class WeaponComponent : Component
     /// The texture of the weapon.
     /// </summary>
     public AssetRef<Texture>? Texture { get; init; }
+
+    public float TextureSize = 1;
 
     /// <summary>
     /// Is this weapon in the world hung up on a wall all nice and pretty?
